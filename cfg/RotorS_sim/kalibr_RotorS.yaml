@@ -1,0 +1,37 @@
+# This file was created by taking the VINS-Fusion/config/husky_sim/zed_camera.yaml,
+# inverting the body_T_cam0 and body_T_cam1, and setting those as
+# T_cam_imu matrix (respectively for cam0 and cam1). The other parameters are
+# from husky_sim/cam0_zed.yaml and husky_sim/cam1_zed.yaml
+
+# This file is input into the
+# kalibr/aslam_offline_calibration/kalibr/python/exporters/kalibr_rovio_config
+# python script, to output a extrinsic config file for rovio for the husky simulation.
+# Run with:
+
+# source ~/ROS/kalibr_ws/devel/setup.bash
+# rosrun kalibr kalibr_rovio_config --cam /home/sequoyah/ROS/rovio_ws/src/rovio/cfg/zed_husky_sim/kalibr_zed_husky.yaml
+
+cam0:
+  camera_model: pinhole
+  intrinsics: [448.09935081542307, 448.09935081542307, 376.5, 240.5]
+  distortion_model: radtan
+  distortion_coeffs: [0, 0, 0, 0]
+  T_cam_imu:
+  - [-0., -1., -0., 0.06]
+  - [-0., -0., -1., 0.5 ]
+  - [ 1., 0., 0., -0.15]
+  - [ 0., 0., 0., 1.]
+  rostopic: /cam0/image_raw
+  resolution: [752, 480]
+cam1:
+  camera_model: pinhole
+  intrinsics: [448.09935081542307, 448.09935081542307, 376.5, 240.5]
+  distortion_model: radtan
+  distortion_coeffs: [0, 0, 0, 0]
+  T_cam_imu:
+  - [-0., -1., -0., -0.06]
+  - [-0., -0., -1., 0.5 ]
+  - [ 1., 0., 0., -0.15]
+  - [ 0., 0., 0., 1.]
+  rostopic: /cam1/image_raw
+  resolution: [752, 480]

@@ -1,0 +1,4 @@
+<launch>
+    <node name="odom_to_path" pkg="rovio" type="odom_to_path.py" output="screen" />
+    <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find rovio)/rviz/rovio_rviz_config.rviz" />
+</launch>

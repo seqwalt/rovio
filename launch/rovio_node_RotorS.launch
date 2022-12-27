@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node pkg="rovio" type="rovio_node" name="rovio" output="screen">
+  <param name="filter_config" value="$(find rovio)/cfg/RotorS_sim/rovio_test.info"/>
+  <param name="camera0_config" value="$(find rovio)/cfg/RotorS_sim/rovio_cam0.yaml"/>
+  <param name="camera1_config" value="$(find rovio)/cfg/RotorS_sim/rovio_cam1.yaml"/>
+  <remap from="/cam0/image_raw" to="/hummingbird/vi_sensor/left/image_raw" />
+  <remap from="/cam1/image_raw" to="/hummingbird/vi_sensor/right/image_raw" />
+  <remap from="/imu0" to="/hummingbird/vi_sensor/imu" />
+  </node>
+</launch>
