@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node pkg="rovio" type="rovio_node" name="rovio" output="screen">
+  <param name="filter_config" value="$(find rovio)/cfg/xavier_nx/rovio_mono.info"/>
+  <param name="camera0_config" value="$(find rovio)/cfg/xavier_nx/rovio_cam0.yaml"/>
+  <remap from="/cam0/image_raw" to="/camera/fisheye1/image_raw" />
+  <remap from="/imu0" to="/camera/imu" />
+  </node>
+</launch>

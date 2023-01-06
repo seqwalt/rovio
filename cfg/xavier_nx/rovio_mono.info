@@ -2,7 +2,7 @@
 ; #include "/home/user/workspace/rovio/cfg/rovio_custom.info"
 Common
 {
-    doVECalibration false;                                       Should the camera-IMU extrinsics be calibrated online
+    doVECalibration true;                                       Should the camera-IMU extrinsics be calibrated online
     depthType 1;                                                Type of depth parametrization (0: normal, 1: inverse depth, 2: log, 3: hyperbolic)
     verbose false;                                              Is the verbose active
 }
@@ -17,17 +17,7 @@ Camera0
   MrMC_y 2.18279e-11;                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
   MrMC_z 2.91038e-11;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
-Camera1
-{
-  CalibrationFile  ;            Camera-Calibration file for intrinsics
-  qCM_x  -0.0009958;                               X-entry of IMU to Camera quaterion (Hamilton)
-  qCM_y  -0.000105;                               Y-entry of IMU to Camera quaterion (Hamilton)
-  qCM_z  0.9999955;                               Z-entry of IMU to Camera quaterion (Hamilton)
-  qCM_w  0.0028165;                              W-entry of IMU to Camera quaterion (Hamilton)
-  MrMC_x -0.0536891;                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_y 0.000186535;                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_z -0.000182507;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
-}
+
 Init
 {
     State
