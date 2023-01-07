@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <node pkg="rovio" type="rovio_node" name="rovio" output="screen">
+  <node pkg="rovio" type="rovio_node" name="rovio" output="screen" launch-prefix="xterm -e gdb --args">
   <param name="filter_config" value="$(find rovio)/cfg/xavier_nx/rovio_stereo.info"/>
   <param name="camera0_config" value="$(find rovio)/cfg/xavier_nx/rovio_cam0.yaml"/>
   <param name="camera1_config" value="$(find rovio)/cfg/xavier_nx/rovio_cam1.yaml"/>
