@@ -13,9 +13,9 @@ Camera0
   qCM_y  -0.5;                               Y-entry of IMU to Camera quaterion (Hamilton)
   qCM_z  0.5;                               Z-entry of IMU to Camera quaterion (Hamilton)
   qCM_w  0.5;                               W-entry of IMU to Camera quaterion (Hamilton)
-  MrMC_x 0.015;                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_x 0.1;                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
   MrMC_y 0.055;                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_z 0.0065;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_z -0.05;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
 Camera1
 {
@@ -24,9 +24,9 @@ Camera1
   qCM_y  -0.5;                               Y-entry of IMU to Camera quaterion (Hamilton)
   qCM_z  0.5;                               Z-entry of IMU to Camera quaterion (Hamilton)
   qCM_w  0.5;                              W-entry of IMU to Camera quaterion (Hamilton)
-  MrMC_x 0.015;                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_x 0.1;                               X-entry of IMU to Camera vector (expressed in IMU CF) [m]
   MrMC_y -0.055;                               Y-entry of IMU to Camera vector (expressed in IMU CF) [m]
-  MrMC_z 0.0065;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
+  MrMC_z -0.05;                               Z-entry of IMU to Camera vector (expressed in IMU CF) [m]
 }
 Init
 {

@@ -13,13 +13,13 @@ Please also have a look at the wiki: https://github.com/ethz-asl/rovio/wiki
 ### Install without opengl scene ###
 Dependencies:
 * ros
-* kindr (https://github.com/ethz-asl/kindr)
+* kindr (https://github.com/ANYbotics/kindr.git)
 * lightweight_filtering (as submodule, use "git submodule update --init --recursive")
 
 ```
 #!command
 
-catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release
+catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DROVIO_NCAM=2
 ```
 
 ### Install with opengl scene ###
@@ -27,7 +27,7 @@ Additional dependencies: opengl, glut, glew (sudo apt-get install freeglut3-dev,
 ```
 #!command
 
-catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON
+catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON -DROVIO_NCAM=2
 ```
 
 ### Euroc Datasets ###
