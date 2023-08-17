@@ -33,6 +33,7 @@
 #include <mutex>
 #include <queue>
 
+//#include <image_transport/image_transport.h> // 8-17-23 added by SW
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
@@ -146,6 +147,8 @@ class RovioNode{
   ros::Publisher pubMarkers_;          /**<Publisher: Ros line marker, indicating the depth uncertainty of a landmark.*/
   ros::Publisher pubExtrinsics_[mtState::nCam_];
   ros::Publisher pubImuBias_;
+  //image_transport::Publisher pubFrameVis_; // 8-17-23 added by SW
+  ros::Publisher pubFrameVis_[mtState::nCam_]; // 8-17-23 added by SW
 
   // Ros Messages
   geometry_msgs::TransformStamped transformMsg_;
@@ -206,8 +209,8 @@ class RovioNode{
 
     // Subscribe topics
     subImu_ = nh_.subscribe("imu0", 1000, &RovioNode::imuCallback,this);
-    subImg0_ = nh_.subscribe("cam0/image_raw", 50, &RovioNode::imgCallback0,this);
-    subImg1_ = nh_.subscribe("cam1/image_raw", 50, &RovioNode::imgCallback1,this);
+    subImg0_ = nh_.subscribe("cam0/image_raw", 1000, &RovioNode::imgCallback0,this);
+    subImg1_ = nh_.subscribe("cam1/image_raw", 1000, &RovioNode::imgCallback1,this);
     subGroundtruth_ = nh_.subscribe("pose", 1000, &RovioNode::groundtruthCallback,this);
     subGroundtruthOdometry_ = nh_.subscribe("odometry", 1000, &RovioNode::groundtruthOdometryCallback, this);
     subVelocity_ = nh_.subscribe("abss/twist", 1000, &RovioNode::velocityCallback,this);
@@ -227,15 +230,25 @@ class RovioNode{
     pub_T_J_W_transform = nh_.advertise<geometry_msgs::TransformStamped>("rovio/T_G_W", 1);
     for(int camID=0;camID<mtState::nCam_;camID++){
       pubExtrinsics_[camID] = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("rovio/extrinsics" + std::to_string(camID), 1 );
+      //image_transport::ImageTransport it(nh_);         // 8-17-23 added by SW
+      //pubFrameVis_ = it.advertise("rovio/frame_vis", 1);  // 8-17-23 added by SW
+      pubFrameVis_[camID] = nh_.advertise<sensor_msgs::Image>("rovio/frame_vis" + std::to_string(camID), 1);  // 8-17-23 added by SW
     }
     pubImuBias_ = nh_.advertise<sensor_msgs::Imu>("rovio/imu_biases", 1 );
 
     // Handle coordinate frame naming
-    map_frame_ = "/map";
-    //world_frame_ = "/world"; // original
-    world_frame_ = "world"; // added by SW. Allows rovio estimate to be used by rpg_quadcopter_control
-    camera_frame_ = "/camera";
-    imu_frame_ = "/imu";
+    // map_frame_ = "/map";
+    // world_frame_ = "/world";
+    // world_frame_ = "world";
+    // camera_frame_ = "/camera";
+    // imu_frame_ = "/imu";
+
+    // added by SW: removed leading "/"
+    map_frame_ = "map";
+    world_frame_ = "world";
+    camera_frame_ = "camera";
+    imu_frame_ = "imu";
+
     nh_private_.param("map_frame", map_frame_, map_frame_);
     nh_private_.param("world_frame", world_frame_, world_frame_);
     nh_private_.param("camera_frame", camera_frame_, camera_frame_);
@@ -652,12 +665,27 @@ class RovioNode{
         ROS_INFO_STREAM(" == Filter Update: " << (t2-t1)/cv::getTickFrequency()*1000 << " ms for processing " << c1-c2 << " images, average: " << timing_T/timing_C);
       }
       if(mpFilter_->safe_.t_ > oldSafeTime){ // Publish only if something changed
+
+        // ---------------------------------------------------------
+        // original
+        // for(int i=0;i<mtState::nCam_;i++){
+        //   if(!mpFilter_->safe_.img_[i].empty() && mpImgUpdate_->doFrameVisualisation_){
+        //     cv::imshow("Tracker" + std::to_string(i), mpFilter_->safe_.img_[i]);
+        //     cv::waitKey(3);
+        //   }
+        // }
+
+        // 8-17-23 added by SW to publish visualizer over ros topic
         for(int i=0;i<mtState::nCam_;i++){
           if(!mpFilter_->safe_.img_[i].empty() && mpImgUpdate_->doFrameVisualisation_){
-            cv::imshow("Tracker" + std::to_string(i), mpFilter_->safe_.img_[i]);
+            sensor_msgs::ImagePtr msg;
+            msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", mpFilter_->safe_.img_[i]).toImageMsg();
+            pubFrameVis_[i].publish(msg);
             cv::waitKey(3);
           }
         }
+        // ---------------------------------------------------------
+
         if(!mpFilter_->safe_.patchDrawing_.empty() && mpImgUpdate_->visualizePatches_){
           cv::imshow("Patches", mpFilter_->safe_.patchDrawing_);
           cv::waitKey(3);
